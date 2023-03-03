@@ -12,7 +12,7 @@ function App() {
   return (
     <div className="App">
       <div className="header">Pomodoro Timer</div>
-      <Timer />
+      <Timer initialTime={1500}/>
       <Button text="Start" onClick={handleClick}/>
       <div className="footer">Copyright by Clowns</div>
     </div>
