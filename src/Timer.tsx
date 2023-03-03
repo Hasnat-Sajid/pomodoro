@@ -1,29 +1,16 @@
 import React, { useState, useEffect } from "react";
-
-// export default function Timer() {
-
-//     const [timePassed, setTimePassed] = useState(0);
-
-//     const id = setInterval(test, 1000);
-
-//     function test () {
-//         setTimePassed(timePassed+1);
-//     }
-
-//     clearInterval(id);
-
-//     return(
-//         <div>
-//             { timePassed }
-//         </div>
-//     );
-// }
+import "./Timer.css";
 
 interface Props {
   initialTime: number;
+  timerFinished: (time: number) => void;
 }
 
-const Timer: React.FC<Props> = ({ initialTime }) => {
+function convertSecondsToTimeFormat (seconds: number): string {
+  return new Date(seconds * 1000).toISOString().substring(14, 19);
+}
+
+const Timer: React.FC<Props> = ({ initialTime, timerFinished }) => {
   const [time, setTime] = useState(initialTime);
 
   useEffect(() => {
@@ -33,10 +20,10 @@ const Timer: React.FC<Props> = ({ initialTime }) => {
 
     return () => clearInterval(intervalId);
   });
-
+  timerFinished(time);
   return (
-    <div>
-      <h1>Time remaining: {time}</h1>
+    <div className="timer">
+      <h1>Time remaining: {convertSecondsToTimeFormat(time)} </h1>
     </div>
   );
 };

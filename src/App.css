@@ -4,7 +4,7 @@
   font-size: 2rem;
   width: -moz-fit-content;
   width: fit-content;
-  margin: 1rem auto;
+  margin: 10vh auto 0rem auto;
   font-weight: bold;
 }
 
@@ -21,7 +21,7 @@
   font-size: 2rem;
   border-radius: 8px;
   background-color: rgb(59, 59, 62);
-  margin: auto;
+  margin: 1vh auto;
 }
 
 .button:hover {
@@ -33,4 +33,23 @@
 .footer {
   width: -moz-fit-content;
   width: fit-content;
+}
+
+.timeCard {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  margin: 0vh auto 20vh auto;
+  padding: 5vh;
+  background-color: rgb(128, 128, 128);
+  border-radius: 1vh;
+  box-shadow: 3px 3px 5px black;
+
+}
+
+.phase {
+  font-size: 2.5rem;
+  width: fit-content;
+  margin: auto;
+  font-weight: bold;
 }
