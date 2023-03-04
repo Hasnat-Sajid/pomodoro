@@ -1,42 +1,50 @@
-import React, { useState, useEffect } from "react";
-
-// export default function Timer() {
-
-//     const [timePassed, setTimePassed] = useState(0);
-
-//     const id = setInterval(test, 1000);
-
-//     function test () {
-//         setTimePassed(timePassed+1);
-//     }
-
-//     clearInterval(id);
-
-//     return(
-//         <div>
-//             { timePassed }
-//         </div>
-//     );
-// }
+import React, { useState, useEffect, useRef } from "react";
+import { MyObject } from "./App";
 
 interface Props {
-  initialTime: number;
+  inputTimes: MyObject[];
+  isPaused: boolean;
 }
 
-const Timer: React.FC<Props> = ({ initialTime }) => {
-  const [time, setTime] = useState(initialTime);
+const formatTime = (time: number) => {
+  const minutes = Math.floor(time / 60);
+  const seconds = time % 60;
+  return `${minutes.toString().padStart(2, "0")}:${seconds
+    .toString()
+    .padStart(2, "0")}`;
+};
+
+const Timer: React.FC<Props> = ({ inputTimes, isPaused }) => {
+  const [step, setStep] = useState(0);
+  const [time, setTime] = useState(inputTimes[step].time);
+  const isMountedRef = useRef(false);
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setTime((prevTime) => prevTime - 1);
-    }, 1000);
+    if (!isMountedRef.current) {
+      isMountedRef.current = true;
+      setTime(inputTimes[step].time);
+      if (step === inputTimes.length - 1) {
+        setStep(0);
+      }
+    }
+  }, [step]);
 
-    return () => clearInterval(intervalId);
-  });
+  useEffect(() => {
+    if (!isPaused && time > 0) {
+      const intervalId = setInterval(() => {
+        setTime((prevTime) => prevTime - 1);
+      }, 1000);
+
+      return () => clearInterval(intervalId);
+    } else if (time === 0) {
+      setStep((prevStep) => prevStep + 1);
+      isMountedRef.current = false;
+    }
+  }, [isPaused, time]);
 
   return (
     <div>
-      <h1>Time remaining: {time}</h1>
+      <h1>{formatTime(time)}</h1>
     </div>
   );
 };
