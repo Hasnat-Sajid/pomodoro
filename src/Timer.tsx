@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { MyObject } from "./App";
+import "./Timer.css";
 
 interface Props {
   inputTimes: MyObject[];
@@ -17,15 +18,28 @@ const formatTime = (time: number) => {
 const Timer: React.FC<Props> = ({ inputTimes, isPaused }) => {
   const [step, setStep] = useState(0);
   const [time, setTime] = useState(inputTimes[step].time);
-  const isMountedRef = useRef(false);
+  const [rounds, setRounds] = useState(1);
+
+  const handleRounds = () => {
+    setRounds((prevRound) => prevRound + 1);
+    if (rounds >= 4) {
+      setRounds(1);
+    } else {
+      setStep(0);
+    }
+  };
 
   useEffect(() => {
-    if (!isMountedRef.current) {
-      isMountedRef.current = true;
+    if (step === 1 && rounds >= 4) {
+      setStep(2);
+    } else if (step === 2) {
+      handleRounds();
+    }
+
+    if (step === inputTimes.length - 1) {
+      setStep(0);
+    } else {
       setTime(inputTimes[step].time);
-      if (step === inputTimes.length - 1) {
-        setStep(0);
-      }
     }
   }, [step]);
 
@@ -38,13 +52,13 @@ const Timer: React.FC<Props> = ({ inputTimes, isPaused }) => {
       return () => clearInterval(intervalId);
     } else if (time === 0) {
       setStep((prevStep) => prevStep + 1);
-      isMountedRef.current = false;
     }
   }, [isPaused, time]);
 
   return (
-    <div>
+    <div className="timer">
       <h1>{formatTime(time)}</h1>
+      <div>{inputTimes[step].isFocus ? "Focus-Time" : "Break"}</div>
     </div>
   );
 };

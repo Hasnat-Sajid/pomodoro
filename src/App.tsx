@@ -11,20 +11,21 @@ export interface MyObject {
 function App() {
   const [isStarted, setStarted] = useState(false);
   const [isPaused, setPaused] = useState(false);
-  const [focusTime, setFocusTime] = useState(true);
 
-  let x = 5;
-  let y = 3;
-  let z = 7;
+  let x = 1500;
+  let y = 300;
+  let z = 900;
 
   const timesArray: MyObject[] = [
     { time: x, isFocus: true },
     { time: y, isFocus: false },
     { time: z, isFocus: false },
+    { time: x, isFocus: true }, //hacky approach
   ];
 
   const handleClick = () => {
     setStarted(!isStarted);
+    setPaused(false);
   };
 
   const handlePause = () => {
@@ -42,7 +43,6 @@ function App() {
           ) : (
             <Button text="Pause" onClick={handlePause} />
           )}
-          <div>{focusTime ? "Focus-Time" : "Break"}</div>
           <Button text="Cancel" onClick={handleClick} />
         </>
       ) : (
